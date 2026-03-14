@@ -1,0 +1,12 @@
+{
+  "name": "discord-vc-bot",
+  "version": "1.0.0",
+  "description": "Sends a message whenever someone joins a voice channel",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.0.0"
+  }
+}
