@@ -1,6 +1,6 @@
-# Discord VC Join Notification Bot
+# Discord VC Notification Bot
 
-Sends a message to a text channel every time someone joins (or switches to) a voice channel.
+Sends a message to a text channel every time someone joins, leaves, or switches voice channels. Supports mapping up to 3 VCs to 3 separate text channels.
 
 ---
 
@@ -23,10 +23,18 @@ Still on the **Bot** tab, scroll down to **Privileged Gateway Intents** and enab
 3. Check bot permissions: `View Channels`, `Send Messages`, `Read Message History`
 4. Copy the generated URL, open it, and invite the bot to your server
 
-### 4. Get Your Notification Channel ID
+### 4. Configure Channel IDs
 1. In Discord, go to **User Settings → Advanced** and enable **Developer Mode**
-2. Right-click the text channel where you want notifications → **Copy Channel ID**
-3. Paste it into `bot.js` where it says `YOUR_TEXT_CHANNEL_ID_HERE`
+2. Right-click a VC → **Copy Channel ID**, do the same for its paired text channel
+3. Repeat for all 3 pairs and fill them into `bot.js`:
+
+```js
+const VC_TO_TEXT = {
+  "VC_CHANNEL_ID_1": "TEXT_CHANNEL_ID_1",
+  "VC_CHANNEL_ID_2": "TEXT_CHANNEL_ID_2",
+  "VC_CHANNEL_ID_3": "TEXT_CHANNEL_ID_3",
+};
+```
 
 ### 5. Install & Run
 
@@ -35,23 +43,36 @@ npm install
 DISCORD_TOKEN=your_token_here node bot.js
 ```
 
-Or on Windows:
-```cmd
-set DISCORD_TOKEN=your_token_here
-node bot.js
+#### Running with PM2 (recommended — survives reboots)
+```bash
+sudo npm install -g pm2
+DISCORD_TOKEN=your_token_here pm2 start bot.js --name discord-vc-bot
+pm2 save
+pm2 startup  # run the command it prints
 ```
 
 ---
 
-## Example Notification
+## Example Notifications
 ```
-🎙️ Alex joined General
-🎙️ Sam switched to Gaming
+Alex joined General VC
+Sam left Gaming VC
+Jordan switched to Study VC
+```
+
+---
+
+## Useful PM2 Commands
+```bash
+pm2 logs discord-vc-bot      # view live logs
+pm2 status                   # check if running
+pm2 restart discord-vc-bot   # restart the bot
+pm2 stop discord-vc-bot      # stop the bot
 ```
 
 ---
 
 ## Notes
-- The bot also detects **channel switches** (someone moves from one VC to another)
-- To disable switch notifications, remove the `switchedChannel` condition in `bot.js`
+- Only VCs listed in `VC_TO_TEXT` will trigger notifications — others are ignored
+- The bot detects **joins**, **leaves**, and **channel switches**
 - Never commit your bot token to version control — use a `.env` file for production
