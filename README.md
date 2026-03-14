@@ -14,8 +14,8 @@ Sends a message to a text channel every time someone joins, leaves, or switches 
 
 ### 2. Enable Required Intents
 Still on the **Bot** tab, scroll down to **Privileged Gateway Intents** and enable:
-- ✅ **Server Members Intent**
-- ✅ **Voice States** (this should be on by default via bot permissions)
+-  **Server Members Intent**
+-  **Voice States** (this should be on by default via bot permissions)
 
 ### 3. Invite the Bot to Your Server
 1. Go to **OAuth2 → URL Generator**
